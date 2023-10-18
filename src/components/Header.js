@@ -1,7 +1,7 @@
 const Header = () => {
     return (
         <header>
-            <p>MLSA x GDSC Opensource Leaderboard</p>
+            <p>Opensource Leaderboard</p>
         </header>
     )
 }

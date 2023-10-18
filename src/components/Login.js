@@ -1,14 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "./AuthContext";
 import axios from 'axios'
 
 
-const Login = () => {    
+const Login = ({ toggleLogin, handleLoginSuccess, signupSuccessMessage  }) => {    
     const { login } = useAuth();
+
+    const BASE_URL = 'https://mlsa-leaderboard-api.azurewebsites.net/'
+
+    const modalBackgroundRef = useRef();
 
     const [formErrors, setFormErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const handleBackgroundClick = (e) => {
+        if (modalBackgroundRef.current === e.target) {
+            // Only hide the modal when clicking on the modal background
+            toggleLogin();
+          }
+    };
 
     const [formData, setFormData] = useState({
         username: "",
@@ -21,20 +31,20 @@ const Login = () => {
             ...formData,
             [name]: value,
         });
-    };    
+    };
 
     const handleLogin = async (event) => {
         event.preventDefault();
         setIsSubmitting(true)
         try {
-            const response = await axios.post('user/login/', {
+            const response = await axios.post(BASE_URL + 'api/v1/users/token/', {
                 username: formData.username,
                 password: formData.password,
             });
             console.log(response.data);
             setIsSubmitting(false);
-            setIsSubmitted(true)
             login(response.data);
+            handleLoginSuccess();
         } catch(error) {
             setIsSubmitting(false);
             error.response && setFormErrors(error.response.data);
@@ -42,20 +52,21 @@ const Login = () => {
         }
     }
 
-    useEffect(() => {
-        if (isSubmitted) {
-            
-        }
-    }, [isSubmitted]);
-
 
     return (
-        <div className="modal-bg" id="modal-bg">
+        <div className="modal-bg" ref={modalBackgroundRef} onClick={handleBackgroundClick}>
             <div className="modal">
                 <div className="modal-header">
                     <p>Login</p>
                 </div>
                 <div className="modal-body">
+                {
+                    signupSuccessMessage && (
+                        <div className="success-message">
+                            {signupSuccessMessage}
+                        </div>
+                    )
+                }
                 <form onSubmit={handleLogin} className="form-container"> 
                         {
                             Object.keys(formErrors).length !== 0 &&
@@ -98,8 +109,7 @@ const Login = () => {
                 </div>
             </div>
         </div>
-    )
-    
+        )
 }
 
 export default Login;

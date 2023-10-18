@@ -1,11 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
-const Signup = () => {
+const Signup = ({ toggleSignup, handleSignupSuccess }) => {
+    const BASE_URL = 'https://mlsa-leaderboard-api.azurewebsites.net/'
+
+    const modalBackgroundRef = useRef();
 
     const [formErrors, setFormErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
+
+    const handleBackgroundClick = (e) => {
+        if (modalBackgroundRef.current === e.target) {
+            // Only hide the modal when clicking on the modal background
+            toggleSignup();
+          }
+    };
 
     const [formData, setFormData] = useState({
         username: "",
@@ -22,7 +32,7 @@ const Signup = () => {
     };
 
     const renderErrorMessage = (name) =>
-        formErrors[name] && (
+        formErrors && formErrors[name] && (
         <div className="error">{formErrors[name].join(", ")}</div>
     );
     
@@ -32,10 +42,11 @@ const Signup = () => {
         setIsSubmitting(true)
         try {
 
-            const response = await axios.post('user/signup/', {
+            const response = await axios.post(BASE_URL + 'api/v1/users/create/', {
                 username: formData.username,
                 email: formData.email,
                 password: formData.password,
+                re_password: formData.password
             });
             console.log(response.data);
             setIsSubmitting(false);
@@ -49,23 +60,24 @@ const Signup = () => {
 
     useEffect(() => {
         if (isSubmitted) {
-            
+            handleSignupSuccess();
         }
-    }, [isSubmitted]);
+    }, [isSubmitted, handleSignupSuccess]);
     
     return (
-        <div class="modal-bg">
-            <div class="modal">
-                <div class="modal-header">
+        <div className="modal-bg" ref={modalBackgroundRef} onClick={handleBackgroundClick}>
+            <div className="modal">
+                <div className="modal-header">
                     <p>Sign Up</p>
                 </div>
-                <div class="modal-body">
+                <div className="modal-body">
                 <form onSubmit={handleSignup} className="form-container">
                         <div className="input-container">
                             <label>Username </label>
                             <input
                                 type="text"
                                 name="username"
+                                placeholder="Enter your GitHub username"
                                 value={formData.username}
                                 onChange={handleInputChange}
                                 required
