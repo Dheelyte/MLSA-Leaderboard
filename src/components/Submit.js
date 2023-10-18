@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useAuth } from "./AuthContext";
 
-const Submit = ({ handleSubmitSuccess, handleError }) => {
+const Submit = ({ handleSubmitSuccess, handleError, setUpdateKey }) => {
     const { user } = useAuth();
 
     const [link, setLink] = useState("");
@@ -12,10 +12,11 @@ const Submit = ({ handleSubmitSuccess, handleError }) => {
     const BASE_URL = 'https://mlsa-leaderboard-api.azurewebsites.net/'
 
     const handleLinkChange = (e) => {
-        setLink(e.value)
+        setLink(e.target.value)
     }
 
     const submitLink = async () => {
+        setIsSubmitting(true);
         try {
             const response = await axios.post(BASE_URL + 'api/v1/leaderboard/submit/', {
                 pr_link: link
@@ -26,11 +27,21 @@ const Submit = ({ handleSubmitSuccess, handleError }) => {
             });
             console.log(response.data);
             setIsSubmitting(false);
+            setShowSubmit(false)
             handleSubmitSuccess();
+            const updateRankResponse = await axios.get(BASE_URL + 'api/v1/leaderboard/me/', {
+                headers: {
+                    'Authorization': `Bearer ${user.access}`
+                }
+            });
+            const storedUser = JSON.parse(localStorage.getItem('mlsa_leaderboard_user'));
+            storedUser.user.rank = updateRankResponse.data.rank;
+            storedUser.user.total_points = updateRankResponse.data.total_points
+            localStorage.setItem('mlsa_leaderboard_user', JSON.stringify(storedUser));
+            setUpdateKey(prev => prev + 1)
         } catch(error) {
             setIsSubmitting(false);
-            handleError(error.data.pr_link);
-            //handleError(["An error occurred"])
+            error.response ? handleError(error.response.data.pr_link) : handleError(["An error occurred"]);
         }
     }
 

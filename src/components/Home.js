@@ -9,6 +9,7 @@ import Footer from './Footer'
 
 
 const Home = () => {
+    const [updateKey, setUpdateKey] = useState(1)
     const [showSignup, setShowSignup] = useState(false);
     const [showLogin, setShowLogin] = useState(false);
     const [signupSuccessMessage, setSignupSuccessMessage] = useState(null);
@@ -55,6 +56,7 @@ const Home = () => {
         clearMessage();
     }
 
+
     return (
         <>
             {
@@ -72,8 +74,8 @@ const Home = () => {
             <Header />
             <div className='container'>
                 <div className='profile-panel'>
-                    <Profile toggleSignup={toggleSignup} toggleLogin={toggleLogin} />
-                    <Submit handleSubmitSuccess={handleSubmitSuccess} handleError={handleError} />
+                    <Profile updateKey={updateKey} toggleSignup={toggleSignup} toggleLogin={toggleLogin} />
+                    <Submit setUpdateKey={setUpdateKey} handleSubmitSuccess={handleSubmitSuccess} handleError={handleError} />
                 </div>
                 <div className='leaderboard-panel'>
                     <Leaderboard handleError={handleError} />

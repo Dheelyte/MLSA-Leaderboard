@@ -2,7 +2,7 @@ import userAvatar from '../images/userAvatar.svg'
 import { useAuth } from './AuthContext';
 
 
-const Profile = ({ toggleSignup, toggleLogin }) => {
+const Profile = ({ updateKey, toggleSignup, toggleLogin }) => {
     const { user } = useAuth();
     
     return (
