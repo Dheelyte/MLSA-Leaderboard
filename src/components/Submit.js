@@ -9,7 +9,7 @@ const Submit = ({ handleSubmitSuccess, handleError, setUpdateKey }) => {
     const [showSubmit, setShowSubmit] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const BASE_URL = 'https://mlsa-leaderboard-api.azurewebsites.net/'
+    const BASE_URL = 'http://18.212.84.29/'
 
     const handleLinkChange = (e) => {
         setLink(e.target.value)

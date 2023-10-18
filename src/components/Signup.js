@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const Signup = ({ toggleSignup, handleSignupSuccess }) => {
-    const BASE_URL = 'https://mlsa-leaderboard-api.azurewebsites.net/'
+    const BASE_URL = 'http://18.212.84.29/'
 
     const modalBackgroundRef = useRef();
 

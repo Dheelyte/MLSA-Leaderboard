@@ -7,7 +7,7 @@ const Leaderboard = () => {
     const [leaderboard, setLeaderboard] = useState([]);
     const [loading, setLoading ] = useState(true)
 
-    const BASE_URL = 'https://mlsa-leaderboard-api.azurewebsites.net/'
+    const BASE_URL = 'http://18.212.84.29/'
 
     useEffect(() => {
         const fetchLeaderboard = async () => {
