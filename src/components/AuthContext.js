@@ -9,7 +9,7 @@ export function useAuth() {
 
 
 export function AuthProvider({ children }) {
-  const BASE_URL = 'http://18.212.84.29/'
+  const BASE_URL = 'https://leaderboard.acel.dev/'
 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true); // Add loading state
