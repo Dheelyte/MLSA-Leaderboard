@@ -9,7 +9,7 @@ const Submit = ({ handleSubmitSuccess, handleError, setUpdateKey }) => {
     const [showSubmit, setShowSubmit] = useState(false)
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const BASE_URL = 'http://18.212.84.29/'
+    const BASE_URL = 'https://leaderboard.acel.dev/'
 
     const handleLinkChange = (e) => {
         setLink(e.target.value)
