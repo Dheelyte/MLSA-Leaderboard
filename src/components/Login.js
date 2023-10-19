@@ -6,7 +6,7 @@ import axios from 'axios'
 const Login = ({ toggleLogin, handleLoginSuccess, signupSuccessMessage  }) => {    
     const { login } = useAuth();
 
-    const BASE_URL = 'http://18.212.84.29/'
+    const BASE_URL = 'https://leaderboard.acel.dev/'
 
     const modalBackgroundRef = useRef();
 
