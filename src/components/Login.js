@@ -10,7 +10,7 @@ const Login = ({ toggleLogin, handleLoginSuccess, signupSuccessMessage  }) => {
 
     const modalBackgroundRef = useRef();
 
-    const [formErrors, setFormErrors] = useState({});
+    const [formErrors, setFormErrors] = useState(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleBackgroundClick = (e) => {
@@ -69,8 +69,8 @@ const Login = ({ toggleLogin, handleLoginSuccess, signupSuccessMessage  }) => {
                 }
                 <form onSubmit={handleLogin} className="form-container"> 
                         {
-                            Object.keys(formErrors).length !== 0 &&
-                            <div className="error">{formErrors["error"]}</div>
+                            formErrors &&
+                            <div className="error">{formErrors["detail"]}</div>
                         }
                         <div className="input-container">
                             <label>Username </label>
